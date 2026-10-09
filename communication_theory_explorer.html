@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLANTAR - PRESENTATION <3 </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        accent: {
+                            purple: '#a855f7',
+                            pink: '#ec4899',
+                            emerald: '#10b981',
+                            amber: '#f59e0b',
+                            indigo: '#6366f1'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(56, 189, 248, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .pulse-node {
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px rgba(56, 189, 248, 0.3); }
+            100% { box-shadow: 0 0 20px rgba(56, 189, 248, 0.8), 0 0 30px rgba(168, 85, 247, 0.4); }
+        }
+
+        .signal-particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #38bdf8;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #38bdf8;
+            transition: all 0.5s linear;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(51, 65, 85, 0.8);
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 116, 139, 1);
+        }
+    </style>
+</head>
+<body class="h-full font-sans antialiased bg-slate-950 text-slate-100 flex flex-col selection:bg-brand-500 selection:text-white">
+
+    <header class="sticky top-0 z-50 glass-panel border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-accent-purple flex items-center justify-center shadow-lg shadow-brand-500/20">
+                        <i class="fa-solid font-bold fa-satellite-dish text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+                            CommTheory Studio
+                        </h1>
+                        <p class="text-xs text-slate-400 hidden sm:block">Communication Process & Uses & Gratifications</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 custom-scrollbar">
+                    <button onclick="switchTab('process')" id="tab-process" class="nav-tab px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 flex items-center space-x-2 bg-brand-600 text-white shadow-md">
+                        <i class="fa-solid fa-diagram-project text-xs"></i>
+                        <span>Process Model</span>
+                    </button>
+                    <button onclick="switchTab('ugt')" id="tab-ugt" class="nav-tab px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 text-slate-400 hover:text-white hover:bg-slate-800/60 flex items-center space-x-2">
+                        <i class="fa-solid fa-layer-group text-xs"></i>
+                        <span>Uses & Gratifications</span>
+                    </button>
+                    <button onclick="switchTab('quiz')" id="tab-quiz" class="nav-tab px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 text-slate-400 hover:text-white hover:bg-slate-800/60 flex items-center space-x-2">
+                        <i class="fa-solid fa-sliders text-xs"></i>
+                        <span>Gratification Profiler</span>
+                    </button>
+                    <button onclick="switchTab('cases')" id="tab-cases" class="nav-tab px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 text-slate-400 hover:text-white hover:bg-slate-800/60 flex items-center space-x-2">
+                        <i class="fa-solid fa-graduation-cap text-xs"></i>
+                        <span>Knowledge & Cases</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- ==================== TAB 1: COMMUNICATION PROCESS ==================== -->
+        <section id="sec-process" class="tab-content space-y-8">
+            <!-- Hero Header -->
+            <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-slate-800 relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="max-w-3xl">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20 mb-3">
+                        <i class="fa-solid fa-route mr-1.5"></i> Interactive Transmission Model
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
+                        The Human Communication Process
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Communication is a dynamic, continuous, and multi-layered process through which participants generate and transmit meaning. Explore how ideas transform into messages, navigate channels, overcome noise, and return as feedback.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Interactive Diagram Canvas/Node Area -->
+            <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+                <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
+                    <div>
+                        <h3 class="font-bold text-lg text-white flex items-center gap-2">
+                            <i class="fa-solid fa-network-wired text-brand-400"></i>
+                            Interactive Communication Flow
+                        </h3>
+                        <p class="text-xs text-slate-400">Click any component to inspect its theoretical definition or use the Simulator below.</p>
+                    </div>
+                    <div class="flex items-center space-x-2 text-xs">
+                        <span class="flex items-center gap-1 text-slate-400"><span class="w-3 h-3 rounded-full bg-brand-500 inline-block"></span> Active Node</span>
+                        <span class="flex items-center gap-1 text-slate-400"><span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span> Noise Vector</span>
+                    </div>
+                </div>
+
+                <!-- Process Flow Map -->
+                <div class="grid grid-cols-1 md:grid-cols-7 gap-3 relative py-4 items-center">
+                    <!-- 1. Sender -->
+                    <button onclick="selectNode('sender')" id="node-sender" class="node-btn glass-card p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 border-slate-700 hover:border-brand-400 group">
+                        <div class="w-12 h-12 rounded-full bg-brand-500/20 text-brand-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <span class="font-bold text-sm text-slate-200">1. Sender</span>
+                        <span class="text-[10px] text-slate-400">Source / Origin</span>
+                    </button>
+
+                    <!-- Arrow 1 -->
+                    <div class="hidden md:flex justify-center text-slate-600">
+                        <i class="fa-solid fa-chevron-right text-lg animate-pulse text-brand-500"></i>
+                    </div>
+
+                    <!-- 2. Encoding -->
+                    <button onclick="selectNode('encoding')" id="node-encoding" class="node-btn glass-card p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 border-slate-700 hover:border-brand-400 group">
+                        <div class="w-12 h-12 rounded-full bg-accent-purple/20 text-accent-purple flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <span class="font-bold text-sm text-slate-200">2. Encoding</span>
+                        <span class="text-[10px] text-slate-400">Symbolic Mapping</span>
+                    </button>
+
+                    <!-- Arrow 2 -->
+                    <div class="hidden md:flex justify-center text-slate-600">
+                        <i class="fa-solid fa-chevron-right text-lg animate-pulse text-brand-500"></i>
+                    </div>
+
+                    <!-- 3. Channel & Message (with Noise overlay) -->
+                    <button onclick="selectNode('channel')" id="node-channel" class="node-btn glass-card p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 border-slate-700 hover:border-brand-400 group relative">
+                        <div class="w-12 h-12 rounded-full bg-accent-indigo/20 text-accent-indigo flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-tower-cell"></i>
+                        </div>
+                        <span class="font-bold text-sm text-slate-200">3. Channel</span>
+                        <span class="text-[10px] text-slate-400">Medium & Message</span>
+                        <!-- Noise badge -->
+                        <span onclick="event.stopPropagation(); selectNode('noise')" class="absolute -top-2 -right-2 bg-red-500/90 text-white text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-md hover:bg-red-600 cursor-pointer">
+                            <i class="fa-solid fa-bolt"></i> Noise
+                        </span>
+                    </button>
+
+                    <!-- Arrow 3 -->
+                    <div class="hidden md:flex justify-center text-slate-600">
+                        <i class="fa-solid fa-chevron-right text-lg animate-pulse text-brand-500"></i>
+                    </div>
+
+                    <!-- 4. Decoding -->
+                    <button onclick="selectNode('decoding')" id="node-decoding" class="node-btn glass-card p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 border-slate-700 hover:border-brand-400 group">
+                        <div class="w-12 h-12 rounded-full bg-accent-amber/20 text-accent-amber flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                        <span class="font-bold text-sm text-slate-200">4. Decoding</span>
+                        <span class="text-[10px] text-slate-400">Interpretation</span>
+                    </button>
+
+                    <!-- Arrow 4 -->
+                    <div class="hidden md:flex justify-center text-slate-600 md:col-start-7">
+                        <!-- Spacer / Wrap indicator -->
+                    </div>
+
+                    <!-- 5. Receiver -->
+                    <button onclick="selectNode('receiver')" id="node-receiver" class="node-btn glass-card p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 border-slate-700 hover:border-brand-400 group md:col-start-6">
+                        <div class="w-12 h-12 rounded-full bg-accent-emerald/20 text-accent-emerald flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-user-check"></i>
+                        </div>
+                        <span class="font-bold text-sm text-slate-200">5. Receiver</span>
+                        <span class="text-[10px] text-slate-400">Destination</span>
+                    </button>
+
+                    <!-- 6. Feedback Loop -->
+                    <button onclick="selectNode('feedback')" id="node-feedback" class="node-btn glass-card p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 border-brand-500/50 hover:border-brand-400 group md:col-start-2 md:col-span-3 bg-brand-900/20">
+                        <div class="flex items-center gap-2 text-brand-400">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            <span class="font-bold text-sm text-slate-200">6. Feedback Loop</span>
+                        </div>
+                        <span class="text-[10px] text-slate-400">Response & Mutual Understanding Confirmation</span>
+                    </button>
+                </div>
+
+                <!-- Node Description Box -->
+                <div id="node-details" class="mt-6 bg-slate-900/90 rounded-xl p-5 border border-slate-800 transition-all">
+                    <!-- Dynamic content injected via JS -->
+                </div>
+            </div>
+
+            <!-- Interactive Live Communication Simulator -->
+            <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-slate-800 space-y-6">
+                <div class="border-b border-slate-800 pb-4">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-vial-circle-check text-accent-purple"></i>
+                        Live Communication Transmission Simulator
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-1">Test how noise, medium channel, and encoding affect message reception and feedback.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Simulator Controls (Left Column) -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">1. Message Intent (Sender)</label>
+                            <input type="text" id="sim-message" value="We need to launch the project at 5:00 PM precisely!" 
+                                class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-brand-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">2. Medium / Channel</label>
+                            <select id="sim-channel" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-brand-500">
+                                <option value="digital">Text Message / Slack (Digital Code)</option>
+                                <option value="vocal">Voice Call (Acoustic Wave)</option>
+                                <option value="face">Face-to-Face (Verbal + Body Language)</option>
+                                <option value="formal">Corporate Email (Formal Syntax)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">3. Type of Environmental Noise</label>
+                            <select id="sim-noise-type" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-brand-500">
+                                <option value="semantic">Semantic Noise (Jargon & Misunderstood Terminology)</option>
+                                <option value="physical">Physical Noise (Poor Wi-Fi / Background Static)</option>
+                                <option value="psychological">Psychological Noise (Stress / Preconceived Bias)</option>
+                                <option value="cultural">Cultural Noise (Idiom / Regional Differences)</option>
+                                <option value="none">None (Ideal Transmission Channel)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <label class="text-xs font-semibold uppercase text-slate-400">Noise Intensity Level</label>
+                                <span id="noise-lvl-txt" class="text-xs text-brand-400 font-bold">Moderate (50%)</span>
+                            </div>
+                            <input type="range" id="sim-noise-level" min="0" max="100" value="50" oninput="updateNoiseLvlTxt(this.value)"
+                                class="w-full accent-brand-500 bg-slate-800 rounded-lg h-2 cursor-pointer">
+                        </div>
+
+                        <button onclick="runSimulation()" id="sim-btn" class="w-full py-3 bg-gradient-to-r from-brand-600 to-accent-purple hover:from-brand-500 hover:to-accent-purple/90 text-white font-bold rounded-xl shadow-lg shadow-brand-500/20 transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Transmit Signal Across Channel</span>
+                        </button>
+                    </div>
+
+                    <!-- Simulator Live Logs & Output (Right Column) -->
+                    <div class="lg:col-span-7 bg-slate-900/80 rounded-xl p-5 border border-slate-800 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
+                                <span class="text-xs font-mono uppercase text-slate-400 flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Real-time Channel Output
+                                </span>
+                                <span id="sim-status" class="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">Idle</span>
+                            </div>
+
+                            <div class="space-y-3 font-mono text-xs">
+                                <div class="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
+                                    <div class="text-slate-500 uppercase text-[10px] mb-1">Encoded Signal in Channel:</div>
+                                    <div id="out-encoded" class="text-brand-400 break-words font-semibold">Ready...</div>
+                                </div>
+
+                                <div class="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
+                                    <div class="text-slate-500 uppercase text-[10px] mb-1">Decoded Message Received by Receiver:</div>
+                                    <div id="out-decoded" class="text-emerald-400 break-words font-semibold">Ready...</div>
+                                </div>
+
+                                <div class="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
+                                    <div class="text-slate-500 uppercase text-[10px] mb-1">Receiver Feedback Loop Response:</div>
+                                    <div id="out-feedback" class="text-accent-amber break-words font-semibold">Ready...</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Theoretical Takeaway Banner -->
+                        <div id="sim-takeaway" class="bg-slate-800/50 p-3 rounded-lg text-xs text-slate-300 border border-slate-700/50">
+                            <i class="fa-solid fa-lightbulb text-accent-amber mr-1"></i>
+                            <span>Adjust settings and click transmit to see how noise degrades communication fidelity.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: USES AND GRATIFICATIONS THEORY ==================== -->
+        <section id="sec-ugt" class="tab-content hidden space-y-8">
+            <!-- Hero Header -->
+            <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-slate-800 relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-accent-purple/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="max-w-3xl">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-accent-purple/10 text-accent-purple border border-accent-purple/20 mb-3">
+                        <i class="fa-solid fa-users mr-1.5"></i> Audience-Centric Framework
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
+                        Uses and Gratifications Theory (UGT)
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Pioneered by Elihu Katz, Jay Blumler, and Michael Gurevitch, UGT shifts the foundational question from <span class="text-accent-purple font-semibold">"What does media do to people?"</span> to <span class="text-brand-400 font-semibold">"What do people do with media?"</span> It assumes audiences are active, goal-oriented consumers selecting media to satisfy specific psychological and social needs.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 5 Core Need Typologies (Katz et al.) -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-shapes text-brand-400"></i>
+                        The 5 Classic Media Gratification Needs
+                    </h3>
+                    <span class="text-xs text-slate-400">Click cards for examples</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <!-- 1. Cognitive Needs -->
+                    <div onclick="showUgtDetail('cognitive')" class="glass-card p-5 rounded-2xl border-slate-800 cursor-pointer group hover:border-brand-500">
+                        <div class="w-10 h-10 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-100 text-sm mb-1">1. Cognitive Needs</h4>
+                        <p class="text-xs text-slate-400">Acquiring information, knowledge, news, and intellectual curiosity.</p>
+                    </div>
+
+                    <!-- 2. Affective Needs -->
+                    <div onclick="showUgtDetail('affective')" class="glass-card p-5 rounded-2xl border-slate-800 cursor-pointer group hover:border-accent-pink">
+                        <div class="w-10 h-10 rounded-xl bg-accent-pink/20 text-accent-pink flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-100 text-sm mb-1">2. Affective Needs</h4>
+                        <p class="text-xs text-slate-400">Emotional connection, pleasure, aesthetic enjoyment, and feeling.</p>
+                    </div>
+
+                    <!-- 3. Personal Integrative -->
+                    <div onclick="showUgtDetail('personal')" class="glass-card p-5 rounded-2xl border-slate-800 cursor-pointer group hover:border-accent-purple">
+                        <div class="w-10 h-10 rounded-xl bg-accent-purple/20 text-accent-purple flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-id-card"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-100 text-sm mb-1">3. Personal Integrative</h4>
+                        <p class="text-xs text-slate-400">Status, credibility, confidence, self-esteem, and identity validation.</p>
+                    </div>
+
+                    <!-- 4. Social Integrative -->
+                    <div onclick="showUgtDetail('social')" class="glass-card p-5 rounded-2xl border-slate-800 cursor-pointer group hover:border-accent-emerald">
+                        <div class="w-10 h-10 rounded-xl bg-accent-emerald/20 text-accent-emerald flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-users-rectangle"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-100 text-sm mb-1">4. Social Integrative</h4>
+                        <p class="text-xs text-slate-400">Belonging, connecting with family, peer talk, and social cohesion.</p>
+                    </div>
+
+                    <!-- 5. Tension Release / Escapism -->
+                    <div onclick="showUgtDetail('tension')" class="glass-card p-5 rounded-2xl border-slate-800 cursor-pointer group hover:border-accent-amber">
+                        <div class="w-10 h-10 rounded-xl bg-accent-amber/20 text-accent-amber flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-couch"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-100 text-sm mb-1">5. Tension Release</h4>
+                        <p class="text-xs text-slate-400">Escapism, stress relief, relaxation, and passing time.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Media Behavior Analyzer -->
+            <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-slate-800 space-y-6">
+                <div>
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-mobile-screen-button text-accent-purple"></i>
+                        Modern Media Habit Gratifications Breakdown
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-1">Select a common digital habit to reveal what psychological gratifications drive that behavior.</p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="analyzeMediaHabit('tiktok')" id="hb-tiktok" class="media-habit-btn glass-card p-3 rounded-xl text-xs font-semibold text-center border-brand-500 bg-brand-900/20 text-white">
+                        <i class="fa-brands fa-tiktok text-lg block mb-1 text-accent-pink"></i> Scrolling TikTok / Reels
+                    </button>
+                    <button onclick="analyzeMediaHabit('news')" id="hb-news" class="media-habit-btn glass-card p-3 rounded-xl text-xs font-semibold text-center border-slate-800 text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-newspaper text-lg block mb-1 text-brand-400"></i> Reading Daily News
+                    </button>
+                    <button onclick="analyzeMediaHabit('gaming')" id="hb-gaming" class="media-habit-btn glass-card p-3 rounded-xl text-xs font-semibold text-center border-slate-800 text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-gamepad text-lg block mb-1 text-accent-purple"></i> Online Multiplayer Gaming
+                    </button>
+                    <button onclick="analyzeMediaHabit('binge')" id="hb-binge" class="media-habit-btn glass-card p-3 rounded-xl text-xs font-semibold text-center border-slate-800 text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-tv text-lg block mb-1 text-accent-amber"></i> Binge-watching Streaming
+                    </button>
+                </div>
+
+                <!-- Analysis Display -->
+                <div id="habit-analysis" class="bg-slate-900/90 rounded-2xl p-6 border border-slate-800 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    <!-- Dynamic analysis filled via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: GRATIFICATION PROFILER QUIZ ==================== -->
+        <section id="sec-quiz" class="tab-content hidden space-y-8">
+            <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-slate-800">
+                <div class="max-w-3xl mb-6">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-accent-emerald/10 text-accent-emerald border border-accent-emerald/20 mb-3">
+                        <i class="fa-solid fa-chart-pie mr-1.5"></i> Self-Assessment Engine
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
+                        Discover Your Media Consumption Profile
+                    </h2>
+                    <p class="text-slate-300 text-sm">
+                        Answer 5 quick statements to calculate your dominant psychological gratifications sought when using smartphones and social media.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <!-- Questions Form -->
+                    <div id="quiz-form" class="lg:col-span-7 space-y-5">
+                        <!-- Q1 -->
+                        <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                            <label class="text-xs font-bold text-slate-200 block">1. I open social media primarily to catch up on current news and learn new skills/tutorials.</label>
+                            <input type="range" id="q1" min="1" max="5" value="3" class="w-full accent-brand-500 bg-slate-800 rounded-lg">
+                            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                                <span>Strongly Disagree</span>
+                                <span>Neutral</span>
+                                <span>Strongly Agree</span>
+                            </div>
+                        </div>
+
+                        <!-- Q2 -->
+                        <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                            <label class="text-xs font-bold text-slate-200 block">2. I consume media to feel intense emotions, laugh, or enjoy aesthetic visual design.</label>
+                            <input type="range" id="q2" min="1" max="5" value="4" class="w-full accent-accent-pink bg-slate-800 rounded-lg">
+                            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                                <span>Strongly Disagree</span>
+                                <span>Neutral</span>
+                                <span>Strongly Agree</span>
+                            </div>
+                        </div>
+
+                        <!-- Q3 -->
+                        <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                            <label class="text-xs font-bold text-slate-200 block">3. I post or share content to build my personal brand, gain recognition, or confirm my lifestyle.</label>
+                            <input type="range" id="q3" min="1" max="5" value="2" class="w-full accent-accent-purple bg-slate-800 rounded-lg">
+                            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                                <span>Strongly Disagree</span>
+                                <span>Neutral</span>
+                                <span>Strongly Agree</span>
+                            </div>
+                        </div>
+
+                        <!-- Q4 -->
+                        <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                            <label class="text-xs font-bold text-slate-200 block">4. Using apps helps me stay connected with friends, family, or online communities I care about.</label>
+                            <input type="range" id="q4" min="1" max="5" value="4" class="w-full accent-accent-emerald bg-slate-800 rounded-lg">
+                            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                                <span>Strongly Disagree</span>
+                                <span>Neutral</span>
+                                <span>Strongly Agree</span>
+                            </div>
+                        </div>
+
+                        <!-- Q5 -->
+                        <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                            <label class="text-xs font-bold text-slate-200 block">5. I scroll through feeds to de-stress, avoid boredom, or unwind after work/study.</label>
+                            <input type="range" id="q5" min="1" max="5" value="5" class="w-full accent-accent-amber bg-slate-800 rounded-lg">
+                            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                                <span>Strongly Disagree</span>
+                                <span>Neutral</span>
+                                <span>Strongly Agree</span>
+                            </div>
+                        </div>
+
+                        <button onclick="calculateProfile()" class="w-full py-3 bg-gradient-to-r from-accent-emerald to-brand-500 text-white font-bold rounded-xl shadow-lg hover:opacity-95 transition-all">
+                            Generate My Gratification Radar Profile
+                        </button>
+                    </div>
+
+                    <!-- Radar Chart Output -->
+                    <div class="lg:col-span-5 bg-slate-900/90 rounded-2xl p-6 border border-slate-800 flex flex-col items-center justify-center space-y-4">
+                        <h4 class="font-bold text-sm text-slate-200 uppercase tracking-wider text-center">
+                            Your Gratification Radar
+                        </h4>
+                        <div class="w-full max-w-[320px] aspect-square relative">
+                            <canvas id="ugtRadarChart"></canvas>
+                        </div>
+                        <div id="quiz-summary" class="text-center text-xs text-slate-300 bg-slate-950 p-4 rounded-xl border border-slate-800 w-full">
+                            Click "Generate" to construct your personalized media archetype profile.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: KNOWLEDGE & CASE STUDIES ==================== -->
+        <section id="sec-cases" class="tab-content hidden space-y-8">
+            <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-slate-800">
+                <div class="max-w-3xl mb-6">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-accent-indigo/10 text-accent-indigo border border-accent-indigo/20 mb-3">
+                        <i class="fa-solid fa-book-open mr-1.5"></i> Practical Application
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
+                        Case Studies & Synthesis
+                    </h2>
+                    <p class="text-slate-300 text-sm">
+                        Examine how the Communication Process Model and Uses & Gratifications Theory intersect in contemporary digital environments.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Case Study 1 -->
+                    <div class="glass-card p-6 rounded-2xl border-slate-800 space-y-3">
+                        <div class="flex items-center space-x-2 text-accent-purple font-bold text-sm">
+                            <i class="fa-solid fa-laptop-code"></i>
+                            <span>Case 1: Remote Work Miscommunication</span>
+                        </div>
+                        <h4 class="font-bold text-slate-100 text-base">Slack Text vs. Video Call Dynamics</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            A software engineering team suffers frequent project friction over Slack. Applying the **Communication Process Model**, text-only channels lack non-verbal encoding (tone, facial cues), introducing high **semantic noise**. By switching to video meetings, channel richness increases, providing immediate feedback loops.
+                        </p>
+                        <div class="pt-2 border-t border-slate-800 text-[11px] text-slate-400">
+                            <strong>Key Concept:</strong> Channel Capacity & Noise Reduction.
+                        </div>
+                    </div>
+
+                    <!-- Case Study 2 -->
+                    <div class="glass-card p-6 rounded-2xl border-slate-800 space-y-3">
+                        <div class="flex items-center space-x-2 text-brand-400 font-bold text-sm">
+                            <i class="fa-solid fa-fire"></i>
+                            <span>Case 2: Viral Social Media Trends</span>
+                        </div>
+                        <h4 class="font-bold text-slate-100 text-base">Why Do Memes Spread Fast?</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Through **Uses & Gratifications Theory**, memes simultaneously fulfill **Personal Integrative** (showing cultural awareness), **Social Integrative** (bonding over shared humor), and **Tension Release** needs. Audiences actively re-encode and re-transmit memes as active participants rather than passive receivers.
+                        </p>
+                        <div class="pt-2 border-t border-slate-800 text-[11px] text-slate-400">
+                            <strong>Key Concept:</strong> Active Audience & Multi-Need Fulfillment.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Flashcards Quiz -->
+                <div class="mt-8 bg-slate-900/90 rounded-2xl p-6 border border-slate-800">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-question text-accent-amber"></i>
+                        Quick Knowledge Flashcards
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div onclick="toggleCard(this)" class="flashcard bg-slate-950 p-5 rounded-xl border border-slate-800 cursor-pointer min-h-[140px] flex flex-col justify-between hover:border-brand-500 transition-all">
+                            <span class="text-[10px] font-mono text-brand-400 uppercase">Question 1 (Click to flip)</span>
+                            <div class="card-front text-xs font-semibold text-slate-200">
+                                How does "Semantic Noise" differ from "Physical Noise"?
+                            </div>
+                            <div class="card-back hidden text-xs text-emerald-400">
+                                Physical noise is environmental sound/static. Semantic noise occurs when sender and receiver use different linguistic codes or jargon.
+                            </div>
+                        </div>
+
+                        <div onclick="toggleCard(this)" class="flashcard bg-slate-950 p-5 rounded-xl border border-slate-800 cursor-pointer min-h-[140px] flex flex-col justify-between hover:border-brand-500 transition-all">
+                            <span class="text-[10px] font-mono text-accent-purple uppercase">Question 2 (Click to flip)</span>
+                            <div class="card-front text-xs font-semibold text-slate-200">
+                                What core paradigm shift did UGT introduce to mass comms?
+                            </div>
+                            <div class="card-back hidden text-xs text-emerald-400">
+                                It shifted focus from "What media does to people" (hypodermic needle effect) to "What people actively do with media".
+                            </div>
+                        </div>
+
+                        <div onclick="toggleCard(this)" class="flashcard bg-slate-950 p-5 rounded-xl border border-slate-800 cursor-pointer min-h-[140px] flex flex-col justify-between hover:border-brand-500 transition-all">
+                            <span class="text-[10px] font-mono text-accent-amber uppercase">Question 3 (Click to flip)</span>
+                            <div class="card-front text-xs font-semibold text-slate-200">
+                                Why is the Feedback Loop critical in communication models?
+                            </div>
+                            <div class="card-back hidden text-xs text-emerald-400">
+                                Feedback transforms linear transmission into a dynamic two-way dialogue, allowing the sender to verify whether the message was accurately decoded.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-slate-900 bg-slate-950 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 space-y-1">
+            <p>Interactive Communication Theory Studio • Built with Tailwind CSS & Chart.js</p>
+            <p>Demonstrating Shannon-Weaver/Schramm Communication Models & Katz-Blumler Uses and Gratifications Theory.</p>
+        </div>
+    </footer>
+
+    <script>
+        const nodeData = {
+            sender: {
+                title: "1. The Sender (Source)",
+                icon: "fa-user",
+                color: "text-brand-400",
+                desc: "The initiator of the communication process who conceives an idea, intent, emotion, or information meant to be shared with another entity.",
+                role: "Formulates original thought & decides communication objective.",
+                example: "A manager wanting to announce a new project deadline."
+            },
+            encoding: {
+                title: "2. Encoding Stage",
+                icon: "fa-code",
+                color: "text-accent-purple",
+                desc: "The cognitive and technical process of converting internal thoughts into symbolic codes (words, gestures, visual icons, audio signals).",
+                role: "Translates abstract ideas into structured, readable/perceivable symbols.",
+                example: "Drafting an email, creating a PowerPoint slide, or choosing vocal pitch."
+            },
+            channel: {
+                title: "3. Channel & Message",
+                icon: "fa-tower-cell",
+                color: "text-accent-indigo",
+                desc: "The medium through which the encoded message travels from sender to receiver (e.g., airwaves for speech, fibre optic cables for emails, print paper).",
+                role: "Carries the physical signal across space and time.",
+                example: "Zoom call, SMS text, face-to-face vocal soundwaves."
+            },
+            noise: {
+                title: "Noise Vector (Interference)",
+                icon: "fa-bolt",
+                color: "text-red-400",
+                desc: "Any internal or external barrier that distorts, delays, or alters the message during transmission or interpretation.",
+                role: "Degrades signal fidelity and introduces ambiguity.",
+                example: "Wi-Fi lag, heavy background noise, emotional exhaustion, complex jargon."
+            },
+            decoding: {
+                title: "4. Decoding Stage",
+                icon: "fa-key",
+                color: "text-accent-amber",
+                desc: "The receiver's process of interpreting, deciphering, and converting received symbols back into meaningful thoughts.",
+                role: "Filters incoming signals through personal knowledge, context, and culture.",
+                example: "Reading an email and determining whether the tone is urgent or relaxed."
+            },
+            receiver: {
+                title: "5. The Receiver (Destination)",
+                icon: "fa-user-check",
+                color: "text-accent-emerald",
+                desc: "The target audience or individual for whom the message was intended.",
+                role: "Processes the decoded message and decides how to respond.",
+                example: "An employee receiving the project deadline update."
+            },
+            feedback: {
+                title: "6. Feedback Loop",
+                icon: "fa-rotate-left",
+                color: "text-brand-400",
+                desc: "The receiver's reaction sent back to the sender. It confirms whether the message was received accurately and closes the communication loop.",
+                role: "Enables two-way communication and error correction.",
+                example: "Replying 'Understood, I will have the report ready by 5 PM'."
+            }
+        };
+
+        const ugtHabitsData = {
+            tiktok: {
+                title: "Scrolling TikTok / Instagram Reels",
+                icon: "fa-brands fa-tiktok text-accent-pink",
+                primary: "Tension Release (Escapism) & Affective",
+                cognitive: "Low-Medium (Bite-sized facts)",
+                affective: "Very High (Quick dopamine, humor)",
+                personal: "Medium (Trend participation)",
+                social: "High (DMing memes to friends)",
+                tension: "Very High (Stress distraction)",
+                summary: "Short-form video feeds primarily cater to rapid tension release and emotional micro-gratifications, with a strong secondary social sharing function."
+            },
+            news: {
+                title: "Reading Daily News / Articles",
+                icon: "fa-solid fa-newspaper text-brand-400",
+                primary: "Cognitive Needs",
+                cognitive: "Very High (Current events, awareness)",
+                affective: "Low (Objective information)",
+                personal: "High (Informed citizen status)",
+                social: "Medium (Conversational fodder)",
+                tension: "Low (Can increase anxiety)",
+                summary: "News consumption is dominated by cognitive needs—reducing uncertainty and navigating real-world political and economic landscapes."
+            },
+            gaming: {
+                title: "Online Multiplayer Gaming",
+                icon: "fa-solid fa-gamepad text-accent-purple",
+                primary: "Social Integrative & Escapism",
+                cognitive: "High (Strategic decision making)",
+                affective: "High (Thrill of victory)",
+                personal: "High (Rank/Skill achievement)",
+                social: "Very High (Teammate voice chat)",
+                tension: "High (Immersive escapism)",
+                summary: "Gaming is a rich multi-need medium satisfying personal competence, social camaraderie, and deep immersion away from daily stress."
+            },
+            binge: {
+                title: "Binge-watching TV Series",
+                icon: "fa-solid fa-tv text-accent-amber",
+                primary: "Affective & Tension Release",
+                cognitive: "Medium (Plot intrigue)",
+                affective: "Very High (Emotional empathy with characters)",
+                personal: "Low-Medium",
+                social: "High (Parasocial relationships)",
+                tension: "Very High (Relaxation)",
+                summary: "Long-form narrative streaming satisfies the need for deep emotional immersion and prolonged cognitive escape from everyday routines."
+            }
+        };
+
+        let ugtChartInstance = null;
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white', 'shadow-md');
+                btn.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800/60');
+            });
+
+            const selectedTab = document.getElementById(`sec-${tabId}`);
+            const selectedBtn = document.getElementById(`tab-${tabId}`);
+
+            if (selectedTab) selectedTab.classList.remove('hidden');
+            if (selectedBtn) {
+                selectedBtn.classList.add('bg-brand-600', 'text-white', 'shadow-md');
+                selectedBtn.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800/60');
+            }
+
+            if (tabId === 'quiz' && !ugtChartInstance) {
+                setTimeout(initRadarChart, 100);
+            }
+        }
+
+        function selectNode(key) {
+            const data = nodeData[key];
+            if (!data) return;
+
+            const container = document.getElementById('node-details');
+            container.innerHTML = `
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center text-xl ${data.color} shrink-0">
+                        <i class="fa-solid ${data.icon}"></i>
+                    </div>
+                    <div class="space-y-2">
+                        <h4 class="text-lg font-bold text-white">${data.title}</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">${data.desc}</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-2">
+                            <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+                                <span class="text-slate-500 font-bold block mb-0.5">CORE ROLE:</span>
+                                <span class="text-slate-200">${data.role}</span>
+                            </div>
+                            <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+                                <span class="text-slate-500 font-bold block mb-0.5">REAL-WORLD EXAMPLE:</span>
+                                <span class="text-slate-200">${data.example}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateNoiseLvlTxt(val) {
+            const txt = document.getElementById('noise-lvl-txt');
+            if (val < 20) txt.textContent = `Minimal (${val}%)`;
+            else if (val < 60) txt.textContent = `Moderate (${val}%)`;
+            else txt.textContent = `Severe Noise Distortion (${val}%)`;
+        }
+
+        function runSimulation() {
+            const msg = document.getElementById('sim-message').value || "Default Message";
+            const channel = document.getElementById('sim-channel').value;
+            const noiseType = document.getElementById('sim-noise-type').value;
+            const noiseLvl = parseInt(document.getElementById('sim-noise-level').value);
+
+            const statusEl = document.getElementById('sim-status');
+            const encEl = document.getElementById('out-encoded');
+            const decEl = document.getElementById('out-decoded');
+            const fbEl = document.getElementById('out-feedback');
+            const takeawayEl = document.getElementById('sim-takeaway');
+
+            statusEl.textContent = "Transmitting...";
+            statusEl.className = "text-xs px-2 py-0.5 rounded bg-brand-500/20 text-brand-400 font-mono animate-pulse";
+
+            // Encoded state
+            let encodedStr = `[${channel.toUpperCase()}_PACKET] "${msg}"`;
+            encEl.textContent = encodedStr;
+
+            // Distort message based on noise
+            let decodedStr = msg;
+            let feedbackStr = "";
+            let lesson = "";
+
+            if (noiseType === 'semantic' && noiseLvl > 20) {
+                decodedStr = msg.replace(/precisely|project|launch|need/gi, "??? [Jargon Error]");
+                feedbackStr = "Sender, please clarify: 'What error occurred during project launch?'";
+                lesson = "Semantic noise occurs when ambiguous terminology or technical jargon breaks mutual understanding.";
+            } else if (noiseType === 'physical' && noiseLvl > 40) {
+                let chars = msg.split('');
+                for (let i = 0; i < chars.length; i += 3) {
+                    if (Math.random() * 100 < noiseLvl) chars[i] = '#';
+                }
+                decodedStr = chars.join('');
+                feedbackStr = "Signal degraded: 'Could you repeat that? Audio cut out.'";
+                lesson = "Physical noise damages signal clarity in the medium, requiring re-transmission.";
+            } else if (noiseType === 'psychological' && noiseLvl > 30) {
+                decodedStr = `"${msg}" (Interpreted with defensive emotional bias)`;
+                feedbackStr = "'Why are you pressuring us so aggressively about the deadline?'";
+                lesson = "Psychological noise filter alters receiver perception based on stress, preconceptions, or emotion.";
+            } else if (noiseType === 'cultural' && noiseLvl > 30) {
+                decodedStr = `"${msg}" (Literal translation misinterprets subtle contextual nuance)`;
+                feedbackStr = "'Does 5:00 PM mean flexible arrival or strict start time?'";
+                lesson = "Cultural noise occurs when high/low context differences alter implied meaning.";
+            } else {
+                decodedStr = msg;
+                feedbackStr = "Acknowledge receipt: 'Understood. All systems go for 5:00 PM.'";
+                lesson = "Low noise enables high transmission fidelity and straightforward feedback confirmation.";
+            }
+
+            setTimeout(() => {
+                decEl.textContent = decodedStr;
+                fbEl.textContent = feedbackStr;
+                statusEl.textContent = "Completed";
+                statusEl.className = "text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono";
+                takeawayEl.innerHTML = `<i class="fa-solid fa-lightbulb text-accent-amber mr-1"></i> <strong>Simulation Takeaway:</strong> ${lesson}`;
+            }, 400);
+        }
+
+        function analyzeMediaHabit(habitKey) {
+            document.querySelectorAll('.media-habit-btn').forEach(b => {
+                b.classList.remove('border-brand-500', 'bg-brand-900/20', 'text-white');
+                b.classList.add('border-slate-800', 'text-slate-400');
+            });
+
+            const activeBtn = document.getElementById(`hb-${habitKey}`);
+            if (activeBtn) {
+                activeBtn.classList.add('border-brand-500', 'bg-brand-900/20', 'text-white');
+                activeBtn.classList.remove('border-slate-800', 'text-slate-400');
+            }
+
+            const data = ugtHabitsData[habitKey];
+            const container = document.getElementById('habit-analysis');
+
+            container.innerHTML = `
+                <div class="md:col-span-5 space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="text-3xl"><i class="${data.icon}"></i></div>
+                        <div>
+                            <h4 class="font-bold text-lg text-white">${data.title}</h4>
+                            <span class="text-xs text-brand-400 font-semibold">Primary Driver: ${data.primary}</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed bg-slate-950 p-3 rounded-xl border border-slate-800">
+                        ${data.summary}
+                    </p>
+                </div>
+
+                <div class="md:col-span-7 space-y-2 text-xs">
+                    <div class="flex justify-between items-center p-2 rounded bg-slate-950 border border-slate-800">
+                        <span class="text-slate-400">Cognitive Need:</span>
+                        <span class="font-bold text-slate-200">${data.cognitive}</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2 rounded bg-slate-950 border border-slate-800">
+                        <span class="text-slate-400">Affective Need:</span>
+                        <span class="font-bold text-accent-pink">${data.affective}</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2 rounded bg-slate-950 border border-slate-800">
+                        <span class="text-slate-400">Personal Integrative:</span>
+                        <span class="font-bold text-accent-purple">${data.personal}</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2 rounded bg-slate-950 border border-slate-800">
+                        <span class="text-slate-400">Social Integrative:</span>
+                        <span class="font-bold text-accent-emerald">${data.social}</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2 rounded bg-slate-950 border border-slate-800">
+                        <span class="text-slate-400">Tension Release:</span>
+                        <span class="font-bold text-accent-amber">${data.tension}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showUgtDetail(needType) {
+            const details = {
+                cognitive: "Cognitive needs encompass gathering information, understanding environments, and satisfying curiosity. Example: Watching documentaries or reading Wikipedia.",
+                affective: "Affective needs involve emotional experiences, pleasure, and aesthetic appreciation. Example: Listening to emotional music or watching romantic dramas.",
+                personal: "Personal integrative needs relate to self-esteem, status, confidence, and identity alignment. Example: Sharing professional accomplishments on LinkedIn.",
+                social: "Social integrative needs focus on strengthening relationships with family and peers. Example: Participating in online gaming guilds or family WhatsApp groups.",
+                tension: "Tension release needs involve escaping stress, relaxing, and diverting focus away from everyday responsibilities. Example: Casual mobile gaming."
+            };
+            const msg = details[needType] || "Select a category.";
+            
+            // Re-use simulation takeaway style or smooth banner alert
+            const banner = document.createElement('div');
+            banner.className = "fixed bottom-6 right-6 max-w-sm glass-panel bg-slate-900 border border-brand-500 p-4 rounded-xl shadow-2xl z-50 text-xs text-slate-200 animate-bounce";
+            banner.innerHTML = `<div class="font-bold text-brand-400 mb-1">Theoretical Detail</div><div>${msg}</div>`;
+            document.body.appendChild(banner);
+            setTimeout(() => banner.remove(), 4500);
+        }
+
+        function initRadarChart() {
+            const ctx = document.getElementById('ugtRadarChart').getContext('2d');
+            ugtChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Cognitive', 'Affective', 'Personal ID', 'Social', 'Tension Release'],
+                    datasets: [{
+                        label: 'Gratification Intensity',
+                        data: [3, 4, 2, 4, 5],
+                        backgroundColor: 'rgba(56, 189, 248, 0.25)',
+                        borderColor: '#38bdf8',
+                        pointBackgroundColor: '#a855f7',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#38bdf8'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            pointLabels: {
+                                color: '#94a3b8',
+                                font: { size: 10, family: 'Inter' }
+                            },
+                            ticks: {
+                                display: false,
+                                min: 0,
+                                max: 5
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function calculateProfile() {
+            const q1 = parseInt(document.getElementById('q1').value);
+            const q2 = parseInt(document.getElementById('q2').value);
+            const q3 = parseInt(document.getElementById('q3').value);
+            const q4 = parseInt(document.getElementById('q4').value);
+            const q5 = parseInt(document.getElementById('q5').value);
+
+            if (ugtChartInstance) {
+                ugtChartInstance.data.datasets[0].data = [q1, q2, q3, q4, q5];
+                ugtChartInstance.update();
+            }
+
+            // Find highest score category
+            const scores = [
+                { name: "Cognitive Knowledge Seeker", val: q1 },
+                { name: "Affective Emotion Seeker", val: q2 },
+                { name: "Identity & Status Builder", val: q3 },
+                { name: "Social Connector", val: q4 },
+                { name: "Escapist & Stress Reliever", val: q5 }
+            ];
+            scores.sort((a, b) => b.val - a.val);
+
+            const summaryEl = document.getElementById('quiz-summary');
+            summaryEl.innerHTML = `
+                <div class="text-brand-400 font-bold mb-1">Dominant Archetype: ${scores[0].name}</div>
+                <div class="text-slate-300">Your primary motive for media selection is to satisfy <strong>${scores[0].name.toLowerCase()}</strong> gratifications.</div>
+            `;
+        }
+
+        function toggleCard(cardEl) {
+            const front = cardEl.querySelector('.card-front');
+            const back = cardEl.querySelector('.card-back');
+            if (front.classList.contains('hidden')) {
+                front.classList.remove('hidden');
+                back.classList.add('hidden');
+            } else {
+                front.classList.add('hidden');
+                back.classList.remove('hidden');
+            }
+        }
+
+        window.onload = function() {
+            selectNode('sender');
+            analyzeMediaHabit('tiktok');
+        };
+    </script>
+</body>
+</html>
